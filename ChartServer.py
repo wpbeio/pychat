@@ -21,7 +21,7 @@ class Commandhandle(object):
     """简单的命令处理函数"""
 
     def unknown(self, session, cmd):
-        session.push('未知的命令行：{0}\r\n'.format(cmd).encode('gb2312'))
+        session.push('未知的命令行：{0}\r\n'.format(cmd).encode('gbk'))
 
     def handle(self, session, line):
         if not line.strip():  # strip删除首尾空字符
@@ -58,7 +58,7 @@ class Room(Commandhandle):
 
     def broadcast(self, line):
         for session in self.sessions:
-            session.push(line.encode('gb2312'))
+            session.push(line.encode('gbk'))
 
     def do_logout(self, session, line):
         raise EndSession
@@ -72,14 +72,14 @@ class LoginRoom(Room):
         self.broadcast('欢迎来到{0} \r\n'.format(self.server.name))
 
     def unknown(self, session, cmd):
-        session.push('请登录\n使用 "login <youname>"\r\n'.encode('gb2312'))
+        session.push('请登录\n使用 "login <youname>"\r\n'.encode('gbk'))
 
     def do_login(self, session, line):
         name = line.strip()
         if not name:
-            session.push('请输入你的名字'.encode('gb2312'))
+            session.push('请输入你的名字'.encode('gbk'))
         elif name in self.server.users:
-            session.push('名称重复，轻重试'.encode('gb2312'))
+            session.push('名称重复，轻重试'.encode('gbk'))
         else:
             session.name = name
             session.enter(self.server.main_room)
@@ -102,15 +102,15 @@ class ChatRoom(Room):
 
     def do_look(self, session, line):
         # 查看房间里面的人
-        session.push('房间成员 ：\r\n'.encode('gb2312'))
+        session.push('房间成员 ：\r\n'.encode('gbk'))
         for other in self.sessions:
-            session.push('{0}\r\n'.format(other.name).encode('gb2312'))
+            session.push('{0}\r\n'.format(other.name).encode('gbk'))
 
     def do_who(self, session, line):
         # 查看现在谁在线
-        session.push('在线室友\r\n'.encode('gb2312'))
+        session.push('在线室友\r\n'.encode('gbk'))
         for name in self.server.users:
-            session.push('{0}\r\n'.format(name).encode('gb2312'))
+            session.push('{0}\r\n'.format(name).encode('gbk'))
 
 
 class LogoutRoom(Room):
@@ -149,7 +149,7 @@ class ChatSession(async_chat):
     # 在从socket中读取一些BIT文本是调用
 
     def collect_incoming_data(self, data):
-        self.data.append(data.decode('gb2321'))
+        self.data.append(data.decode('gbk'))
 
 # 在读取一个结束符是调用。结束符通过set_terminator方法设置，默认为"\r\n"
 
